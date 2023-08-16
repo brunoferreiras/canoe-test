@@ -58,7 +58,7 @@ class FundsController extends Controller
     public function show(int $id)
     {
         try {
-            $fund = $this->repository->with(['manager', 'companies'])->find($id);
+            $fund = $this->repository->with(['manager', 'companies', 'aliases'])->find($id);
             return response()->json($fund, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
