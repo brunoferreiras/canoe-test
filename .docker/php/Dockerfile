@@ -37,6 +37,8 @@ RUN apk update && \
     pdo_mysql && \
     # Install Supervisor
     apk add supervisor && \
+    # Installing Composer
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     # Installing Tini
     wget -O /tini https://github.com/krallin/tini/releases/download/v0.18.0/tini-static && \
     chmod +x /tini && \
