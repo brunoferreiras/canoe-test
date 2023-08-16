@@ -1,0 +1,13 @@
+.git
+.idea
+.env
+.data
+docker-composer.yml
+bootstrap/cache/*
+storage/app/*
+storage/framework/cache/*
+storage/framework/views/*
+storage/logs/*
+node_modules
+vendor
+coverage
