@@ -25,7 +25,7 @@ class Fund extends Model implements Transformable
 
     public function manager()
     {
-        return $this->belongsTo(Manager::class);
+        return $this->belongsTo(FundManager::class, 'manager_id', 'id');
     }
 
     public function companies()

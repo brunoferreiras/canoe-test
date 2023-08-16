@@ -11,7 +11,7 @@ class FundUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class FundUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'string|max:255',
+            'start_year' => 'string|max:4',
+            'manager_id' => 'integer|exists:fund_managers,id',
         ];
     }
 }

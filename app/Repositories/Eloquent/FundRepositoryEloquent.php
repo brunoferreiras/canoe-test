@@ -14,6 +14,12 @@ use App\Models\Fund;
  */
 class FundRepositoryEloquent extends BaseRepository implements FundRepository
 {
+    protected $fieldSearchable = [
+        'name' => 'like',
+        'start_year' => 'like',
+        'manager.name' => 'like',
+    ];
+
     /**
      * Specify Model class name
      *

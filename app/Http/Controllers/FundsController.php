@@ -27,7 +27,7 @@ class FundsController extends Controller
      */
     public function index()
     {
-        //
+        return $this->repository->with('manager')->paginate();
     }
 
     /**
@@ -40,19 +40,29 @@ class FundsController extends Controller
      */
     public function store(FundCreateRequest $request)
     {
-        //
+        try {
+            $fund = $this->repository->create($request->all());
+            return response()->json($fund, 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
-        //
+        try {
+            $fund = $this->repository->with(['manager', 'companies'])->find($id);
+            return response()->json($fund, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -66,9 +76,13 @@ class FundsController extends Controller
      */
     public function update(FundUpdateRequest $request, $id)
     {
-        //
+        try {
+            $fund = $this->repository->update($request->all(), $id);
+            return response()->json($fund, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -79,6 +93,11 @@ class FundsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $this->repository->delete($id);
+            return response()->json([], 204);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }
