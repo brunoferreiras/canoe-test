@@ -30,11 +30,11 @@ class Fund extends Model implements Transformable
 
     public function companies()
     {
-        return $this->belongsToMany(Company::class, 'funds_has_companies');
+        return $this->belongsToMany(Company::class, 'funds_has_companies', 'fund_id', 'company_id');
     }
 
     public function aliases()
     {
-        return $this->hasMany(FundAlias::class);
+        return $this->hasMany(FundAlias::class, 'fund_id', 'id');
     }
 }

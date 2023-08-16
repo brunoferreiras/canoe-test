@@ -15,8 +15,8 @@ return new class extends Migration
             $table->integer('fund_id')->unsigned()->index();
             $table->integer('company_id')->unsigned()->index();
 
-            $table->foreign('fund_id')->references('id')->on('campaigns')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('company_id')->references('id')->on('templates')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('fund_id')->references('id')->on('funds')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

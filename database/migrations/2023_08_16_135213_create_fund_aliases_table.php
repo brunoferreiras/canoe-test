@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('alias');
 
             $table->integer('fund_id')->unsigned()->index();
-            $table->foreign('fund_id')->references('id')->on('fund_managers')
+            $table->foreign('fund_id')->references('id')->on('funds')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 

@@ -22,4 +22,9 @@ class FundManager extends Model implements Transformable
      * @var array
      */
     protected $fillable = ['name'];
+
+    public function funds()
+    {
+        return $this->hasMany(Fund::class, 'manager_id', 'id');
+    }
 }

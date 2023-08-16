@@ -3,6 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Company;
+use App\Models\Fund;
+use App\Models\FundAlias;
+use App\Models\FundManager;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,11 +17,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        FundManager::factory()
+            ->count(10)
+            ->has(
+                Fund::factory()
+                    ->has(Company::factory()->count(3), 'companies')
+                    ->has(
+                        FundAlias::factory()
+                            ->state(function (array $attributes, Fund $fund) {
+                                return ['fund_id' => $fund->id];
+                            })->count(3),
+                        'aliases'
+                    )
+                    ->count(3)
+            )
+            ->create();
     }
 }

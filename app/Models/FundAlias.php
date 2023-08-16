@@ -22,4 +22,9 @@ class FundAlias extends Model implements Transformable
      * @var array
      */
     protected $fillable = ['alias', 'fund_id'];
+
+    public function fund()
+    {
+        return $this->belongsTo(Fund::class, 'fund_id', 'id');
+    }
 }
