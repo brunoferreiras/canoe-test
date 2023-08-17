@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "999f644b-4695-4838-a25e-4b60dff08396",
+		"name": "Canoe",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2800400"
+	},
+	"item": [
+		{
+			"name": "Get Funds",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/funds?search=manager.name:Parisian",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"funds"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "name:Bergstrom;start_year:1987;manager.name:Parisian",
+							"description": "All query params",
+							"disabled": true
+						},
+						{
+							"key": "search",
+							"value": "manager.name:Parisian",
+							"description": "Only manager name"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Fund",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Fund name\",\n    \"start_year\": \"2023\",\n    \"manager_id\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/funds",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"funds"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Fund",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/funds/30",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"funds",
+						"30"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Fund",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/funds/31",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"funds",
+						"31"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Fund",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/funds/31",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"funds",
+						"31"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:8040",
+			"type": "string"
+		}
+	]
+}
