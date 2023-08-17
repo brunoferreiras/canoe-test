@@ -16,8 +16,9 @@ class FundRepositoryEloquent extends BaseRepository implements FundRepository
 {
     protected $fieldSearchable = [
         'name' => 'like',
-        'start_year' => 'like',
+        'start_year' => '=',
         'manager.name' => 'like',
+        'manager.id' => '=',
     ];
 
     /**
@@ -36,5 +37,13 @@ class FundRepositoryEloquent extends BaseRepository implements FundRepository
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    public function hasDuplicate(Fund $fund): bool
+    {
+        return $this->getModel()->where('name', $fund->name)
+            ->where('start_year', $fund->start_year)
+            ->where('manager_id', $fund->manager_id)
+            ->count() > 1;
     }
 }

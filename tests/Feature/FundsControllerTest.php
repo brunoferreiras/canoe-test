@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Events\FundDuplicateWarning;
+use App\Listeners\FundDuplicateWarningListener;
 use App\Models\Fund;
 use App\Models\FundManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class FundsControllerTest extends TestCase
@@ -82,8 +84,28 @@ class FundsControllerTest extends TestCase
             ])->assertJsonCount(1, 'data');
     }
 
+    public function testSearchByManagerId()
+    {
+        $manager = FundManager::factory()->create();
+        Fund::factory()->count(3)->create(['manager_id' => $manager->id]);
+        $fund = Fund::factory()->create();
+        $response = $this->get('/api/funds?search=manager.id:' . $fund->manager->id);
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'name',
+                        'manager_id',
+                    ]
+                ],
+                'links' => [],
+            ])->assertJsonCount(1, 'data');
+    }
+
     public function testStore()
     {
+        Event::fake();
         $data = Fund::factory()->make()->toArray();
         $this->assertDatabaseMissing('funds', $data);
         $response = $this->postJson('/api/funds', $data);
@@ -94,6 +116,34 @@ class FundsControllerTest extends TestCase
                 'manager_id',
             ]);
         $this->assertDatabaseHas('funds', $data);
+        Event::assertDispatched(FundDuplicateWarning::class, 0);
+    }
+
+    public function testIfDuplicatedWarningIfDispatched()
+    {
+        Event::fake([FundDuplicateWarning::class]);
+        $fundManager = FundManager::factory()->create();
+        $fund = Fund::factory()->create(['manager_id' => $fundManager->id]);
+        $data = [
+            'name' => $fund->name,
+            'manager_id' => $fundManager->id,
+            'start_year' => $fund->start_year,
+        ];
+        $this->assertDatabaseCount('funds', 1);
+        $response = $this->postJson('/api/funds', $data);
+        $response->assertStatus(201)
+            ->assertJsonStructure([
+                'id',
+                'name',
+                'manager_id',
+            ]);
+        $this->assertDatabaseHas('funds', $data);
+        $this->assertDatabaseCount('funds', 2);
+        Event::assertDispatched(FundDuplicateWarning::class, 1);
+        Event::assertListening(
+            FundDuplicateWarning::class,
+            FundDuplicateWarningListener::class
+        );
     }
 
     public function testShow()

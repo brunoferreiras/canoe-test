@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Fund;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
@@ -11,5 +12,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface FundRepository extends RepositoryInterface
 {
-    //
+    public function hasDuplicate(Fund $fund): bool;
 }
